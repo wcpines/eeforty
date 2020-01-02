@@ -1,0 +1,14 @@
+<!-- now.eex -->
+
+<html>
+  <div class="home">
+    <div class="page-title">
+      <h2> EEforty </h2>
+      <p>
+    </div>
+    <div class="time">
+      <h3> GOGOGO </h3>
+      <a href="/">Go back</a>
+    </div>
+  </div>
+  <html>

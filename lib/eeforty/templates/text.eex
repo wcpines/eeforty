@@ -1,0 +1,24 @@
+<html>
+   <div class="text-page">
+      <h3> TEXT EM </h3>
+      It looks like you're better off waiting until the overall commute time is shorter.<br>
+      Please provide a cell number so we can alert you of an optimal departure time.
+      <p>
+         <em>(NB: Currently only U.S. numbers are supported)</em>
+      </p>
+
+      <h5>Your Itinerary</h5>
+
+        <%=itinerary%>
+
+
+      <form action="/text" method="post" >
+         <p>
+            <input id="token" name="token" type="hidden" value="<%=token%>">
+
+         </p>
+         <input id="submit-button" type="submit" value="Text Me">
+      </form>
+      <a href="/">Home</a>
+   </div>
+</html>
