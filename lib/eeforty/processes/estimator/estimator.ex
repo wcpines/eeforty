@@ -1,21 +1,40 @@
 defmodule Eeforty.Processes.Estimator do
-  import Eeforty.Processes.EstimatorHelper
+  import Eeforty.Utils
+  alias Eeforty.Adapters.GoogleMaps
 
-  def start_link() do
-    {:ok, _pid} = GenServer.start_link(__MODULE__, [], name: __MODULE__)
+  @google_maps Application.get_env(:eeforty, :google_maps, GoogleMaps)
+
+  def get_estimate([origin, _, _, _]) when is_empty(origin) do
+    {:error, "Missing required param: Origin"}
   end
 
-  def get_when_to_leave(itinerary) do
-    GenServer.call(__MODULE__, {:get_when_to_leave, itinerary})
+  def get_estimate([_, destination, _, _]) when is_empty(destination) do
+    {:error, "Missing required param: Destination"}
   end
 
-  def init(_opts) do
-    {:ok, []}
+  def get_estimate([origin, destination, departure_datetime, commute_threshold]) do
+    gmaps_result = @google_maps.request(origin, destination, departure_datetime)
+
+    case gmaps_result do
+      {:ok, estimate} ->
+        [estimate, commute_threshold]
+
+      {:error, _msg} ->
+        gmaps_result
+    end
   end
 
-  def handle_call({:get_when_to_leave, itinerary}, _from, _empty_map) do
-    itinerary
-    |> get_estimate()
-    |> compare_times()
+  def compare_times([estimate, commute_threshold]) do
+    case estimate <= commute_threshold do
+      true ->
+        {:reply, "now", []}
+
+      _ ->
+        {:reply, "later", []}
+    end
+  end
+
+  def compare_times({:error, msg}) do
+    {:reply, {:error, msg}, []}
   end
 end

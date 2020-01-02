@@ -1,5 +1,12 @@
-defmodule Eeforty.Utils.Misc do
+defmodule Eeforty.Utils do
   alias Eeforty.Utils.TimeHandler
+
+  defguard is_empty(value)
+           when is_nil(value) or
+                  value == "" or
+                  value == [] or
+                  value == {} or
+                  value == %{}
 
   def present_itinerary(itinerary) do
     window =

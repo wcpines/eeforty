@@ -1,6 +1,6 @@
 defmodule Eeforty do
-  alias Eeforty.Processes.Estimator
-  alias Eeforty.Processes.SessionServer, as: Sessions
+  alias Eeforty.Processes.EstimatorServer
+  alias Eeforty.Processes.SessionServer
   alias Eeforty.Router
 
   # TODO: i) implement own ETS table / itinerary storage ii) fix testing/mocking for gmaps
@@ -9,8 +9,8 @@ defmodule Eeforty do
 
     children = [
       worker(Router, []),
-      worker(Estimator, []),
-      worker(Sessions, [])
+      worker(EstimatorServer, []),
+      worker(SessionServer, [])
     ]
 
     opts = [strategy: :one_for_one, name: Eeforty]

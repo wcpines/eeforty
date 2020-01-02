@@ -6,8 +6,8 @@ defmodule Eeforty.Router do
   alias Eeforty.Processes.Session
   alias Eeforty.Utils.TimeHandler
   alias Eeforty.Processes.Estimator
+  import Eeforty.Utils
   # alias Eeforty.Adapters.Twilio
-  import Eeforty.Utils.Misc
 
   plug(Plug.Parsers,
     parsers: [:urlencoded, :json],
@@ -29,14 +29,6 @@ defmodule Eeforty.Router do
     |> send_file(200, "lib/eeforty/templates/home.eex")
   end
 
-  # post "/go" do
-  #   conn
-  #   |> assign(:itinerary, itinerary)
-  #   |> fetch_session()
-  #   |> put_session(:itinerary, itinerary)
-
-  #   |> send_resp(200, EEx.eval_file("lib/eeforty/templates/text.eex"))
-  # end
   post "/go" do
     itinerary = TimeHandler.convert_itinerary(conn.body_params)
     token = generate_session_key(itinerary)
